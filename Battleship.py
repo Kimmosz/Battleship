@@ -45,28 +45,28 @@ class PlayerSea:
         for currentField in field:
             if columnCounter == 0:
                 rowIndexes = str(fieldIndex)
-                boardOutput+=str(field[fieldIndex])
-                columnCounter+=1
-                fieldIndex+=1 
+                boardOutput += str(field[fieldIndex])
+                columnCounter += 1
+                fieldIndex += 1 
                 
             elif columnCounter < 19:
-                boardOutput+=str(field[fieldIndex])
-                columnCounter+=1
-                fieldIndex+=1 
+                boardOutput += str(field[fieldIndex])
+                columnCounter += 1
+                fieldIndex += 1 
             elif columnCounter == 19:
-                boardOutput+=str(field[fieldIndex])
-                columnCounter+=1
+                boardOutput += str(field[fieldIndex])
+                columnCounter += 1
             else:
-                rowIndexes+=f'-{fieldIndex}'
-                boardOutput+=f'  [{rowIndexes}] \n'
+                rowIndexes += f'-{fieldIndex}'
+                boardOutput += f'  [{rowIndexes}] \n'
                 columnCounter = 0
                 rowIndexes = 0
-                fieldIndex+=1 
+                fieldIndex += 1 
 
                  
             
-        rowIndexes+=f'-{fieldIndex}'
-        boardOutput+=f'  [{rowIndexes}] \n'
+        rowIndexes += f'-{fieldIndex}'
+        boardOutput += f'  [{rowIndexes}] \n'
         print(boardOutput)
 
     # Function where player can give a position for the current ship
@@ -99,7 +99,7 @@ class PlayerSea:
                     for size in range(currentShip.size):
                         shipIndexes.append(position)                    # Add to Player Sea
                         currentShip.addCoordinate(position)             # Add coordinate to current Ship
-                        position+=1
+                        position += 1
                     self.setAllPrivateFields(shipIndexes)
                     currentShip.getCoordinates()
                     break
@@ -121,7 +121,7 @@ class PlayerSea:
                     for size in range(currentShip.size):
                         shipIndexes.append(position)                    # Add to Player Sea
                         currentShip.addCoordinate(position)             # Add coordinate to current Ship
-                        position+=20
+                        position += 20
                     self.setAllPrivateFields(shipIndexes)
                     currentShip.getCoordinates()
                     break
@@ -160,8 +160,7 @@ class PlayerSea:
     
 # Head class of the ships
 class Ship:
-    def __init__(self, shipId, name, size):
-        self.shipId = shipId
+    def __init__(self, name, size):
         self.name = name
         self.size = size
         self.coordinates = []
@@ -191,7 +190,7 @@ class AircraftCarrier(Ship):
         pressEnter()
 
 # Function to create new set of ships
-createNewShips = lambda: [Patrol(1, 'Patrol Ship', 2), Patrol(2, 'Patrol Ship', 2), Cruiser(3, 'Cruiser', 3), Cruiser(4, 'Cruiser', 3), AircraftCarrier(5, 'Aircraft Carrier', 4), AircraftCarrier(6, 'Aircraft Carrier', 4)]
+createNewShips = lambda: [Patrol('Patrol Ship', 2), Patrol('Patrol Ship', 2), Cruiser('Cruiser', 3), Cruiser('Cruiser', 3), AircraftCarrier('Aircraft Carrier', 4), AircraftCarrier('Aircraft Carrier', 4)]
 
 # Function that manages the main menu
 def mainMenu():
@@ -256,24 +255,29 @@ def localVersusPlay(boards, ships):
     playerTurn = 0
     while True:
         clear()
+        # Player one is able to play the game
         if playerTurn == 0:
             print('******** Turn Player One ********')
             boards[1].showPlayField(True)
             fieldIndex = int(input('Give a number to shoot on [0-399] : '))
             isHit = boards[1].checkShot(fieldIndex)
-            isFinished = boards[1].shipsLeft()
-            if isHit and not isFinished:
-                continue
-            elif isHit and isFinished:
-                print('***** Player One has won! *****')
+            shipsLeft = boards[1].shipsLeft()
+
+            if not shipsLeft:
+                clear() 
+                print('\n***** Player One has won! *****')
                 boards[1].showPlayField(True)
                 pressEnter()
                 mainMenu()
                 break
+            
+            if isHit:
+                continue
             else:
                 playerTurn = 1
                 continue
-                
+
+        # Player two is able to play the game      
         else: 
             print('******** Turn Player Two ********')
             boards[0].showPlayField(True)
@@ -282,6 +286,7 @@ def localVersusPlay(boards, ships):
             shipsLeft = boards[0].shipsLeft()
 
             if not shipsLeft:
+                clear()
                 print('\n***** Player Two has won! *****')
                 boards[0].showPlayField(True)
                 pressEnter()
