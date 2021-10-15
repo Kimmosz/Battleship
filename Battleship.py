@@ -9,7 +9,7 @@ class PlayerSea:
     def __init__(self, name):
         self.name = name
         self.privateField = [0 for index in range(419)]
-        self.playField = [' ⛋ ' for index in range(419)]
+        self.playField = [' " ' for index in range(419)]
         self.score = 0
 
     # Function to set the private fields
@@ -24,9 +24,9 @@ class PlayerSea:
     # Function to set the current play field
     def setPlayField(self, fieldIndex, isHit):
         if isHit: 
-            self.playField[fieldIndex] = ' ⛝ '
+            self.playField[fieldIndex] = ' X '
         else:
-            self.playField[fieldIndex] = ' ⛞ '
+            self.playField[fieldIndex] = ' O '
 
     # Function to show the current private or play field
     def showPlayField(self, isPlayField):
@@ -38,6 +38,7 @@ class PlayerSea:
         
         field = []
         if isPlayField:
+            print('X = Hit, O = Miss')
             field = self.playField
         else:
             field = self.privateField
